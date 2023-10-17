@@ -68,6 +68,14 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] private LayerMask _groundLayer;
 	#endregion
 
+	[Header("Dash")]
+	[SerializeField] private bool canDash = true;
+	[HideInInspector]public bool isDashing;
+	private Vector2 dashDir;
+	[SerializeField] private float dashingPower = 24f;
+	[SerializeField] private float dashingTime = 0.2f;
+	[SerializeField] private float dashingCooldown = 20f;
+
 
 	[HideInInspector]
 	public bool isDead;
@@ -106,7 +114,7 @@ public class PlayerMovement : MonoBehaviour
 
 		isDead = GameManager.Instance.isGameOver;
 
-		//Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), true);
+		Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), true);
 
 		#region INPUT HANDLER
 		if (!isDead)
@@ -149,6 +157,21 @@ public class PlayerMovement : MonoBehaviour
 				if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.C) || Input.GetKeyUp(KeyCode.J))
 				{
 					OnJumpUpInput();
+				}
+
+                if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) && canDash)
+                {
+					StartCoroutine(Dash());
+                }
+
+                if (isDashing)
+                {
+					Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), true);
+				}
+                else
+                {
+					Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), false);
+
 				}
 			}
 		}
@@ -257,9 +280,11 @@ public class PlayerMovement : MonoBehaviour
 			IsSliding = false;
 		#endregion
 
+
+
 		#region GRAVITY
 		//Higher gravity if we've released the jump input or are falling
-		if (IsSliding)
+		if (IsSliding || isDashing)
 		{
 			SetGravityScale(0);
 		}
@@ -302,6 +327,39 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+	private IEnumerator Dash()
+    {
+		canDash = false;
+		canMove = false;
+		isDashing = true;
+		//float originalGravity = RB.gravityScale;
+		//RB.gravityScale = 0;
+		dashDir = new Vector2(_moveInput.x, y: 0);
+
+        if (dashDir == Vector2.zero)
+        {
+			if(IsFacingRight)
+            dashDir = new Vector2(1, y: 0);
+            else
+				dashDir = new Vector2(-1, y: 0);
+		}
+
+		float powerDash = dashingPower;
+
+		if (!character.isGrounded)
+			powerDash = (dashingPower -4) /2;
+		else
+			powerDash = dashingPower;
+
+        RB.velocity = dashDir.normalized * powerDash;
+		yield return new WaitForSeconds(dashingTime);
+		//RB.gravityScale = originalGravity;
+		isDashing = false;
+		canMove = true;
+		yield return new WaitForSeconds(dashingCooldown);
+		canDash = true;
+    }
+
 	IEnumerator Slash(float delay)
     {
 
@@ -328,8 +386,11 @@ public class PlayerMovement : MonoBehaviour
 		//Handle Run
 		if (IsWallJumping)
 			Run(Data.wallJumpRunLerp);
+		else if (isDashing)
+			Run(0.1f);
 		else
 			Run(1);
+
 
 		//Handle Slide
 		if (IsSliding)
@@ -410,8 +471,6 @@ public class PlayerMovement : MonoBehaviour
 		 * RB.velocity = new Vector2(RB.velocity.x + (Time.fixedDeltaTime  * speedDif * accelRate) / RB.mass, RB.velocity.y);
 		 * Time.fixedDeltaTime is by default in Unity 0.02 seconds equal to 50 FixedUpdate() calls per second
 		*/
-
-		
 
 	}
 

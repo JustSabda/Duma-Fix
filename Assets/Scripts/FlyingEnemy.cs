@@ -7,7 +7,7 @@ public class FlyingEnemy : MonoBehaviour
     public float maxSpeed;
     public bool chase = false;
     public Vector3 startingPoint;
-    private float curSpeed;
+    [HideInInspector]public float curSpeed;
 
     public int enemyDamage;
    
@@ -40,7 +40,7 @@ public class FlyingEnemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        boxCollider = GetComponent<BoxCollider2D>();
         player = GameObject.FindGameObjectWithTag("Player");
         playerHealth = player.GetComponent<Health>();
         anim = GetComponent<Animator>();

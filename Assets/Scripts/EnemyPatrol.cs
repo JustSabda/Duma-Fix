@@ -20,10 +20,21 @@ public class EnemyPatrol : MonoBehaviour
 
     private bool collideRight;
 
+    [Header("Enemy Attack")]
+    private bool collideAttack;
+    bool isAttack = false;
+    public int enemyDamage;
+    private Health playerHealth;
+    [SerializeField] private float range;
+    [SerializeField] private float colliderDistance;
+    [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private BoxCollider2D boxCollider;
+
     // Start is called before the first frame update
     void Start()
     {
         isChasing = false;
+        playerHealth = GameObject.FindWithTag("Player").GetComponent<Health>();
         playerTransform = GameObject.FindWithTag("Player").transform;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -43,6 +54,11 @@ public class EnemyPatrol : MonoBehaviour
         
         collideRight = Physics2D.Raycast(transform.position + new Vector3(0, 0, 0), transform.right, chaseDistance, LayerMask.GetMask("Player"));
 
+        collideAttack =
+    Physics2D.BoxCast(boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance,
+    new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z),
+    0, Vector2.right, 0, playerLayer);
+
         if (collideRight)
         {
             isChasing = true;
@@ -52,46 +68,55 @@ public class EnemyPatrol : MonoBehaviour
             isChasing = false;
         }
 
-        if (isChasing)
+        if (!isAttack)
         {
-            if(transform.position.x < playerTransform.position.x)
+            if (isChasing)
             {
-                if (curSpeed != 0)
-                    rb.velocity = new Vector2(curSpeed + 1, 0);
+                if (!collideAttack)
+                {
+                    if (transform.position.x < playerTransform.position.x)
+                    {
+                        if (curSpeed != 0)
+                            rb.velocity = new Vector2(curSpeed + 1, 0);
+                    }
+                    else
+                    {
+                        if (curSpeed != 0)
+                            rb.velocity = new Vector2(-curSpeed - 1, 0);
+                    }
+                }
+                else
+                {
+                    enemyAttack();
+                }
             }
             else
             {
-                if (curSpeed != 0)
-                    rb.velocity = new Vector2(-curSpeed - 1 , 0);
-            }
 
-        }
-        else
-        {
-
-            if (currentPoint == pointB.transform)
-            {
-                rb.velocity = new Vector2(curSpeed, 0);
-
-            }
-            else
-            {
-                rb.velocity = new Vector2(-curSpeed, 0);
-            }
+                if (currentPoint == pointB.transform)
+                {
+                    rb.velocity = new Vector2(curSpeed, 0);
+                    //anim.SetBool("isRunning", true);
+                }
+                else
+                {
+                    rb.velocity = new Vector2(-curSpeed, 0);
+                    //anim.SetBool("isRunning", true);
+                }
 
 
-            if (Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointB.transform)
-            {
-                StartCoroutine(Idle());
-                currentPoint = pointA.transform;
-            }
-            else if (Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointA.transform)
-            {
-                StartCoroutine(Idle());
-                currentPoint = pointB.transform;
+                if (Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointB.transform)
+                {
+                    StartCoroutine(Idle());
+                    currentPoint = pointA.transform;
+                }
+                else if (Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointA.transform)
+                {
+                    StartCoroutine(Idle());
+                    currentPoint = pointB.transform;
+                }
             }
         }
-
     }
 
     private IEnumerator Idle()
@@ -113,6 +138,33 @@ public class EnemyPatrol : MonoBehaviour
         transform.localScale = localScale;
     }
 
+    void enemyAttack()
+    {
+        isAttack = true;
+        curSpeed = 0;
+        anim.SetTrigger("isAttack");
+
+        StartCoroutine(WaitForAnimation(anim.GetCurrentAnimatorStateInfo(0).length));
+    }
+
+    private void DamagePlayer()
+    {
+        if (collideAttack)
+        {
+            playerHealth.enemy = this.gameObject;
+            playerHealth.Damage(enemyDamage);
+        }
+    }
+
+    IEnumerator WaitForAnimation(float _delay)
+    {
+        yield return new WaitForSeconds(_delay);
+        isAttack = false;
+        curSpeed = speed;
+        anim.SetBool("isRunning", true);
+    }
+
+
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(pointA.transform.position, 0.5f);
@@ -125,6 +177,18 @@ public class EnemyPatrol : MonoBehaviour
             Debug.DrawRay(transform.position + new Vector3(0, 0, 0), transform.right * chaseDistance, Color.white);
 
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (collideAttack)
+            Gizmos.color = Color.red;
+        else
+            Gizmos.color = Color.green;
+
+        Gizmos.DrawWireCube(boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance,
+           new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z));
+    }
+
 
 
 

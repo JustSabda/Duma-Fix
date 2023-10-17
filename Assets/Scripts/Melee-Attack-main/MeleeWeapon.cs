@@ -7,8 +7,13 @@ public class MeleeWeapon : MonoBehaviour
     //How much damage the melee attack does
     [SerializeField]
     private int damageAmount = 20;
+
+    [SerializeField]
+    private int damageAmountDash = 20;
     //Reference to Character script which contains the value if the player is facing left or right; if you don't have this or it's named something different, either omit it or change the class name to what your Character script is called
     private Character character;
+
+    private PlayerMovement player;
     //Reference to the Rigidbody2D on the player
     private Rigidbody2D rb;
     //Reference to the MeleeAttackManager script on the player
@@ -20,8 +25,12 @@ public class MeleeWeapon : MonoBehaviour
     //Determines if the melee strike is downwards to perform extra force to fight against gravity
     private bool downwardStrike;
 
+    bool collideRight;
+    public float distance;
+
     private void Start()
     {
+        player = GetComponentInParent<PlayerMovement>();
         //Reference to the Character script on the player; if you don't have this or it's named something different, either omit it or change the class name to what your Character script is called
         character = GetComponentInParent<Character>();
         //Reference to the Rigidbody2D on the player
@@ -34,6 +43,19 @@ public class MeleeWeapon : MonoBehaviour
     {
         //Uses the Rigidbody2D AddForce method to move the player in the correct direction
         HandleMovement();
+    }
+    private void Update()
+    {
+        //collideRight = Physics2D.Raycast(transform.position + new Vector3(0, 0, 0), transform.right, distance, LayerMask.GetMask("Enemy"));
+        RaycastHit2D[] detectedEnemy = Physics2D.RaycastAll(transform.position + new Vector3(0, 0, 0), transform.right, distance, LayerMask.GetMask("Enemy"));
+
+        if (player.isDashing)
+        {
+            for (int i = 0; i < detectedEnemy.Length; i++)
+            {
+                detectedEnemy[i].transform.GetComponent<EnemyHealth>().Damage(damageAmountDash);
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -119,5 +141,10 @@ public class MeleeWeapon : MonoBehaviour
         collided = false;
         //Turns off the downwardStrike bool
         downwardStrike = false;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+       Debug.DrawRay(transform.position + new Vector3(0, 0, 0), transform.right * distance, Color.red);
     }
 }

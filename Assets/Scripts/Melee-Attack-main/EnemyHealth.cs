@@ -21,14 +21,26 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField]
     private int currentHealth;
 
+    public enum Enemy {Land, Fly};
+    public Enemy enemyType;
 
-    private EnemyPatrol enemyMove;
+
+    private EnemyPatrol enemy1;
+    private FlyingEnemy enemy2;
 
     private void Start()
     {
         //Sets the enemy to the max amount of health when the scene loads
         currentHealth = healthAmount;
-        enemyMove = GetComponent<EnemyPatrol>();
+        
+        if(enemyType == Enemy.Land)
+        {
+            enemy1.GetComponent<EnemyPatrol>();
+        }
+        else
+        {
+            enemy2.GetComponent<FlyingEnemy>();
+        }
     }
 
     private void Update()
@@ -63,11 +75,30 @@ public class EnemyHealth : MonoBehaviour
     //Coroutine that runs to allow the enemy to receive damage again
     private IEnumerator TurnOffHit()
     {
-        enemyMove.curSpeed = 0;
+        if (enemyType == Enemy.Land)
+        {
+            
+            enemy1.curSpeed = 0;
+        }
+        else
+        {
+            enemy2.curSpeed = 0;
+        }
+
+        
         //Wait in the amount of invulnerabilityTime, which by default is .2 seconds
         yield return new WaitForSeconds(invulnerabilityTime);
         //Turn off the hit bool so the enemy can receive damage again
         hit = false;
-        enemyMove.curSpeed = enemyMove.speed;
+        if (enemyType == Enemy.Land)
+        {
+
+            enemy1.curSpeed = enemy1.speed;
+        }
+        else
+        {
+            enemy2.curSpeed = enemy2.maxSpeed;
+        }
+        
     }
 }
