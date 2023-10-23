@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class SceneLoad : MonoBehaviour
 {
     public GameObject MenuPanel;
-    public GameObject tutorPanel;
+    public GameObject selectLevelPanel;
     public GameObject settingPanel;
     public GameObject creditPanel;
 
@@ -16,6 +16,14 @@ public class SceneLoad : MonoBehaviour
     private int currentSceneIndex;
     private int sceneToContinue;
 
+
+    [Header("MusicBtn")]
+    public GameObject musicBtnOn;
+    public GameObject musicBtnOff;
+
+    [Header("SFXBtn")]
+    public GameObject SFXBtnOn;
+    public GameObject SFXBtnOff;
 
 
     private void Awake()
@@ -29,10 +37,10 @@ public class SceneLoad : MonoBehaviour
             Instance = this;
         }
 
-        if (MenuPanel == null || tutorPanel == null || creditPanel == null)
-        {
-            return;
-        }
+        //if (MenuPanel == null || selectLevelPanel == null || creditPanel == null || settingPanel == null)
+        //{
+        //    return;
+        //}
        
         /*
         if(Tutor1 == null && Tutor2 == null && Tutor3 == null)
@@ -46,7 +54,6 @@ public class SceneLoad : MonoBehaviour
 
     private void Start()
     {
-
         
         if (AudioManager.Instance.x == true)
         {
@@ -60,6 +67,48 @@ public class SceneLoad : MonoBehaviour
         }
         
     }
+
+    private void Update()
+    {
+        if (SceneManager.GetActiveScene().name == ("MainMenu"))
+        {
+            if (!AudioManager.Instance.musicSource.mute)
+            {
+                musicBtnOn.SetActive(true);
+                musicBtnOff.SetActive(false);
+            }
+            else
+            {
+                musicBtnOn.SetActive(false);
+                musicBtnOff.SetActive(true);
+            }
+
+            if (!AudioManager.Instance.sfxSource.mute)
+            {
+                SFXBtnOn.SetActive(true);
+                SFXBtnOff.SetActive(false);
+            }
+            else
+            {
+                SFXBtnOn.SetActive(false);
+                SFXBtnOff.SetActive(true);
+            }
+        }
+    }
+
+    public void musicBtn()
+    {
+
+        AudioManager.Instance.ToogleMusic();
+
+    }
+
+    public void SFXBtn()
+    {
+
+        AudioManager.Instance.ToogleSFX();
+
+    }
     public void NewGame()
     {
         
@@ -70,9 +119,9 @@ public class SceneLoad : MonoBehaviour
 
     }
 
-    public void TutorPanel()
+    public void SelectLevelPanel()
     {
-        if (MenuPanel == null || tutorPanel == null || creditPanel == null)
+        if (MenuPanel == null || selectLevelPanel == null || creditPanel == null || settingPanel == null)
         {
             return;
         }
@@ -81,13 +130,13 @@ public class SceneLoad : MonoBehaviour
             MenuPanel.SetActive(false);
             settingPanel.SetActive(false);
             creditPanel.SetActive(false);
-            tutorPanel.SetActive(true);
+            selectLevelPanel.SetActive(true);
         }
     }
 
     public void SettingPanel()
     {
-        if (MenuPanel == null || tutorPanel == null || creditPanel == null)
+        if (MenuPanel == null || selectLevelPanel == null || creditPanel == null || settingPanel == null)
         {
             return;
         }
@@ -96,13 +145,13 @@ public class SceneLoad : MonoBehaviour
             MenuPanel.SetActive(false);
             settingPanel.SetActive(true);
             creditPanel.SetActive(false);
-            tutorPanel.SetActive(false);
+            selectLevelPanel.SetActive(false);
         }
     }
    
     public void CreditPanel()
     {
-        if (MenuPanel == null || tutorPanel == null || creditPanel == null)
+        if (MenuPanel == null || selectLevelPanel == null || creditPanel == null || settingPanel == null)
         {
             return;
         }
@@ -111,13 +160,13 @@ public class SceneLoad : MonoBehaviour
             MenuPanel.SetActive(false);
             settingPanel.SetActive(false);
             creditPanel.SetActive(true);
-            tutorPanel.SetActive(false);
+            selectLevelPanel.SetActive(false);
         }
     }
 
     public void Back()
     {
-        if (MenuPanel == null || tutorPanel == null || creditPanel == null)
+        if (MenuPanel == null || selectLevelPanel == null || creditPanel == null || settingPanel == null)
         {
             return;
         }
@@ -126,7 +175,7 @@ public class SceneLoad : MonoBehaviour
             MenuPanel.SetActive(true);
             settingPanel.SetActive(false);
             creditPanel.SetActive(false);
-            tutorPanel.SetActive(false);
+            selectLevelPanel.SetActive(false);
         }
     }
 
@@ -166,12 +215,6 @@ public class SceneLoad : MonoBehaviour
     public void NextLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    }
-
-    private void Update()
-    {
-
-
     }
 
 

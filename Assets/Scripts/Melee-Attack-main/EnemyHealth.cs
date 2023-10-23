@@ -35,11 +35,11 @@ public class EnemyHealth : MonoBehaviour
         
         if(enemyType == Enemy.Land)
         {
-            enemy1.GetComponent<EnemyPatrol>();
+            enemy1 = GetComponent<EnemyPatrol>();
         }
         else
         {
-            enemy2.GetComponent<FlyingEnemy>();
+            enemy2 = GetComponent<FlyingEnemy>();
         }
     }
 

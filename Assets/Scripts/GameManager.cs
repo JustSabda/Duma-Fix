@@ -34,9 +34,12 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        if (SceneManager.GetActiveScene().name != ("MainMenu"))
+        {
+            player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+            playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
+        }
 
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-        playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
     }
 
     private void Start()
@@ -49,32 +52,56 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(player == null && SceneManager.GetActiveScene().name == ("Level 1"))
+        if (SceneManager.GetActiveScene().name != ("MainMenu"))
         {
 
-        }
-
-        if(Objective == victoryCondition)
-        {
-            isWin = true;
-            AudioManager.Instance.PlaySFX("Win");
-        }
-
-        if (!UIManager.Instance.isPaused)
-        {
-            if (isGameOver)
+            if (Objective == victoryCondition)
             {
-                Time.timeScale = 0;
-                AudioManager.Instance.PlaySFX("Lose");
+                isWin = true;
+                AudioManager.Instance.PlaySFX("Win");
+                UnlockNewLevel();
             }
-            else
+
+            if (!UIManager.Instance.isPaused)
             {
-                Time.timeScale = 1;
+                if (isGameOver)
+                {
+                    Time.timeScale = 0;
+                    AudioManager.Instance.PlaySFX("Lose");
+                }
+                else
+                {
+                    Time.timeScale = 1;
+                }
             }
         }
+
+
+        //if (AudioManager.Instance.x == true)
+        //{
+        //    if (SceneManager.GetActiveScene().name == ("MainMenu"))
+        //    {
+        //        AudioManager.Instance.PlayMusic("MainMenu");
+        //    }
+
+        //    if (SceneManager.GetActiveScene().name == ("Level 1"))
+        //    {
+        //        AudioManager.Instance.PlayMusic("Level 1");
+        //    }
+        //    AudioManager.Instance.x = false;
+        //}
     }
 
 
+    void UnlockNewLevel()
+    {
+        if (SceneManager.GetActiveScene().buildIndex >= PlayerPrefs.GetInt("ReachedIndex"))
+        {
+            PlayerPrefs.SetInt("ReachedIndex", SceneManager.GetActiveScene().buildIndex + 1);
+            PlayerPrefs.SetInt("UnlockedLevel", PlayerPrefs.GetInt("UnlockedLevel", 1) + 1);
+            PlayerPrefs.Save();
+        }
+    }
 
     public float GetPercent(float value , float max)
     {
