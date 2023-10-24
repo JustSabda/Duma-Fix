@@ -9,6 +9,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -75,6 +76,7 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] private float dashingPower = 24f;
 	[SerializeField] private float dashingTime = 0.2f;
 	[SerializeField] private float dashingCooldown = 20f;
+	[SerializeField] private TrailRenderer tr;
 
 
 	[HideInInspector]
@@ -327,14 +329,22 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+	public void DashBtn()
+    {
+		StartCoroutine(Dash());
+	}
 	private IEnumerator Dash()
     {
 		canDash = false;
 		canMove = false;
 		isDashing = true;
+
+		UIManager.Instance.specialAtkBtn.GetComponent<Button>().interactable = false;
 		//float originalGravity = RB.gravityScale;
 		//RB.gravityScale = 0;
 		dashDir = new Vector2(_moveInput.x, y: 0);
+		tr.emitting = true;
+		
 
         if (dashDir == Vector2.zero)
         {
@@ -354,11 +364,13 @@ public class PlayerMovement : MonoBehaviour
         RB.velocity = dashDir.normalized * powerDash;
 		yield return new WaitForSeconds(dashingTime);
 		//RB.gravityScale = originalGravity;
+		tr.emitting = false;
 		isDashing = false;
 		canMove = true;
 		yield return new WaitForSeconds(dashingCooldown);
 		canDash = true;
-    }
+		UIManager.Instance.specialAtkBtn.GetComponent<Button>().interactable = true;
+	}
 
 	IEnumerator Slash(float delay)
     {

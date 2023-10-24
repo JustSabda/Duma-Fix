@@ -63,6 +63,16 @@ public class EnemyHealth : MonoBehaviour
                 currentHealth = 0;
                 //Removes GameObject from the scene; this should probably play a dying animation in a method that would handle all the other death logic, but for the test it just disables it from the scene
                 gameObject.SetActive(false);
+
+                //if (enemyType == Enemy.Land)
+                //{
+                //    enemy1.GetComponent<EnemyPatrol>().IsDead();
+                //}
+                //else
+                //{
+                //    enemy2 = GetComponent<FlyingEnemy>();
+                //}
+
             }
             else
             {

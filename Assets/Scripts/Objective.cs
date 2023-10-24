@@ -19,6 +19,7 @@ public class Objective : MonoBehaviour
                 GameManager.Instance.Objective++;
                 isTaken = true;
             }
+            AudioManager.Instance.PlaySFX("CollectSFX");
             this.gameObject.SetActive(false);
         }
     }

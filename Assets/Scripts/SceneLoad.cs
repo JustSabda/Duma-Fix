@@ -115,7 +115,7 @@ public class SceneLoad : MonoBehaviour
         SceneManager.LoadScene(1);
         Time.timeScale = 1f;
         
-        //AudioManager.Instance.x = true;
+        AudioManager.Instance.x = true;
 
     }
 
@@ -183,8 +183,9 @@ public class SceneLoad : MonoBehaviour
     {
         currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         PlayerPrefs.SetInt("SavedScene", currentSceneIndex);
-        //AudioManager.Instance.x = true;
+        
         SceneManager.LoadScene(0);
+        AudioManager.Instance.x = true;
     }
 
     public void ContinueGame()
@@ -197,7 +198,7 @@ public class SceneLoad : MonoBehaviour
             return;
         Time.timeScale = 1f;
 
-        //AudioManager.Instance.x = true;
+        AudioManager.Instance.x = true;
     }
     public void Restart()
     {
@@ -215,6 +216,7 @@ public class SceneLoad : MonoBehaviour
     public void NextLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        AudioManager.Instance.x = true;
     }
 
 

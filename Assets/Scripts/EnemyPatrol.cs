@@ -30,6 +30,7 @@ public class EnemyPatrol : MonoBehaviour
     [SerializeField] private LayerMask playerLayer;
     [SerializeField] private BoxCollider2D boxCollider;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -189,7 +190,12 @@ public class EnemyPatrol : MonoBehaviour
            new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z));
     }
 
+    //public void IsDead()
+    //{
+    //    anim.SetTrigger("isDead");
 
+    //    gameObject.SetActive(false);
+    //}
 
 
 

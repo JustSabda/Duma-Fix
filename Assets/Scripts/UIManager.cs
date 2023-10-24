@@ -27,6 +27,13 @@ public class UIManager : MonoBehaviour
 
     public GameObject settingPanel;
 
+    public GameObject tutorPanel;
+    private bool isTutor;
+
+    public GameObject specialAtkPanel;
+    public GameObject specialAtkBtn;
+    
+
     // Start is called before the first frame update
     [Header("MusicBtn")]
     public GameObject musicBtnOn;
@@ -49,6 +56,7 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        isTutor = true;
     }
     private void Start()
     {
@@ -60,6 +68,7 @@ public class UIManager : MonoBehaviour
         {
             panelLose.SetActive(false);
         }
+        
     }
 
     
@@ -68,7 +77,7 @@ public class UIManager : MonoBehaviour
     private void Update()
     {
         
-
+        
         objCount = GameManager.Instance.Objective;
 
         if(objective != null)
@@ -84,6 +93,12 @@ public class UIManager : MonoBehaviour
                     objective.transform.GetChild(0).gameObject.SetActive(true);
                     objective.transform.GetChild(1).gameObject.SetActive(false);
                     objective.transform.GetChild(2).gameObject.SetActive(false);
+                    if (isTutor)
+                    {
+                        tutorPanel.SetActive(true);
+                        Time.timeScale = 0f;
+                        isTutor = false;
+                    }
                     break;
                 case 2:
                     objective.transform.GetChild(0).gameObject.SetActive(true);
@@ -94,7 +109,6 @@ public class UIManager : MonoBehaviour
                     objective.transform.GetChild(0).gameObject.SetActive(true);
                     objective.transform.GetChild(1).gameObject.SetActive(true);
                     objective.transform.GetChild(2).gameObject.SetActive(true);
-
                     panelWin.SetActive(true);
                     break;
             }
@@ -149,12 +163,27 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void OpenSkill()
+    {
+        specialAtkBtn.SetActive(true);
+        specialAtkPanel.SetActive(true);
+        isPaused = true;
+        Time.timeScale = 0f;
+    }
+
     public void UI_Health(float value, float max)
     {
         healthImage.fillAmount = GameManager.Instance.GetPercent(value, max);
 
     }
 
+    public void CloseTutorPanel()
+    {
+        tutorPanel.SetActive(false);
+        specialAtkPanel.SetActive(false);
+        isPaused = false;
+        Time.timeScale = 1f;
+    }
 
     public void musicBtn()
     {

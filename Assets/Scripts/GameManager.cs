@@ -20,20 +20,22 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     [HideInInspector]
     public Vector3 respawnPoint;
+
+    bool isLose;
     
 
     private void Awake()
     {
 
-        if (Instance == null)
+        if (Instance != null && Instance != this)
         {
-            Instance = this;
-            //DontDestroyOnLoad(gameObject);
+            Destroy(this);
         }
         else
         {
-            Destroy(gameObject);
+            Instance = this;
         }
+
         if (SceneManager.GetActiveScene().name != ("MainMenu"))
         {
             player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
@@ -45,20 +47,38 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         isWin = false;
+        isLose = false;
         isGameOver = false;
         Time.timeScale = 1;
+
+        if (AudioManager.Instance.x == true)
+        {
+            if (SceneManager.GetActiveScene().name == ("MainMenu"))
+            {
+                AudioManager.Instance.PlayMusic("MainMenu");
+            }
+
+            if (SceneManager.GetActiveScene().name == ("Level 1") || SceneManager.GetActiveScene().name == ("Level 2") || SceneManager.GetActiveScene().name == ("Level 3"))
+            {
+                AudioManager.Instance.PlayMusic("LevelGame");
+            }
+            AudioManager.Instance.x = false;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+
         if (SceneManager.GetActiveScene().name != ("MainMenu"))
         {
 
             if (Objective == victoryCondition)
             {
+                if (!isWin)
+                    AudioManager.Instance.PlaySFX("Win");
                 isWin = true;
-                AudioManager.Instance.PlaySFX("Win");
+
                 UnlockNewLevel();
             }
 
@@ -66,8 +86,11 @@ public class GameManager : MonoBehaviour
             {
                 if (isGameOver)
                 {
-                    Time.timeScale = 0;
+                    Time.timeScale = 0; 
+                    if(!isLose)
                     AudioManager.Instance.PlaySFX("Lose");
+
+                    isLose = true;
                 }
                 else
                 {
@@ -76,20 +99,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-
-        //if (AudioManager.Instance.x == true)
-        //{
-        //    if (SceneManager.GetActiveScene().name == ("MainMenu"))
-        //    {
-        //        AudioManager.Instance.PlayMusic("MainMenu");
-        //    }
-
-        //    if (SceneManager.GetActiveScene().name == ("Level 1"))
-        //    {
-        //        AudioManager.Instance.PlayMusic("Level 1");
-        //    }
-        //    AudioManager.Instance.x = false;
-        //}
     }
 
 
@@ -98,7 +107,7 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex >= PlayerPrefs.GetInt("ReachedIndex"))
         {
             PlayerPrefs.SetInt("ReachedIndex", SceneManager.GetActiveScene().buildIndex + 1);
-            PlayerPrefs.SetInt("UnlockedLevel", PlayerPrefs.GetInt("UnlockedLevel", 1) + 1);
+            PlayerPrefs.SetInt("UnlockedLevel", PlayerPrefs.GetInt("UnlockedLevel", 2) + 1);
             PlayerPrefs.Save();
         }
     }
@@ -112,6 +121,7 @@ public class GameManager : MonoBehaviour
     {
         //UIManager.Instance.panelLose.SetActive(false);
         isGameOver = false;
+        isLose = false;
 
         player.transform.position = respawnPoint;
         //player.RB.velocity = Vector2.zero;

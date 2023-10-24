@@ -72,15 +72,13 @@ public class MeleeAttackManager : Character
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
             //Sets the meleeAttack bool to true
-            if(canAttack)
-            meleeAttack = true;
-            AudioManager.Instance.PlaySFX("Attack SFX");
+            Attack();
         }
         else
         {
             //Turns off the meleeAttack bool
             //StartCoroutine(DelayAttack(delayAttack));
-            meleeAttack = false;
+            AttackUp();
         }
         //Checks to see if meleeAttack is true and pressing up
         if (meleeAttack && Input.GetAxis("Vertical") > 0)
@@ -111,6 +109,18 @@ public class MeleeAttackManager : Character
             meleeAnimator.SetTrigger("ForwardMeleeSwipe");
             canAttack = false;
         }
+    }
+
+    public void Attack()
+    {
+        if (canAttack)
+            meleeAttack = true;
+        AudioManager.Instance.PlaySFX("Attack SFX");
+    }
+
+    public void AttackUp()
+    {
+        meleeAttack = false;
     }
 
     private IEnumerator DelayAttack(float delay)

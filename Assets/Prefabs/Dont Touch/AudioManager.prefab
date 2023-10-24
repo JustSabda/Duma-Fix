@@ -49,19 +49,23 @@ MonoBehaviour:
   musicSounds:
   - name: MainMenu
     clip: {fileID: 8300000, guid: 47b67f11dfa13d746ade6cc0ad21c8e9, type: 3}
+  - name: LevelGame
+    clip: {fileID: 8300000, guid: 9149c16ef12fd0d459a9f6e0dcad3330, type: 3}
   sfxSounds:
   - name: Win
     clip: {fileID: 8300000, guid: d8d1720aad399634ab26a4964a8ac2a2, type: 3}
   - name: Lose
     clip: {fileID: 8300000, guid: 59e35bc182a0e3447970b91ee6c4f12f, type: 3}
   - name: Attack SFX
-    clip: {fileID: 8300000, guid: ccfdd4b86d769d84294db97b2934d73c, type: 3}
+    clip: {fileID: 8300000, guid: f9dfdca3b67215d4dbc4749e24d1a608, type: 3}
   - name: Dash SFX
     clip: {fileID: 8300000, guid: 7790ccdf444b1474495a752c2c2e9d85, type: 3}
   - name: Hit SFX
     clip: {fileID: 8300000, guid: 89b992a4819a2c94b82bf36a35f2a70f, type: 3}
   - name: Jump SFX
     clip: {fileID: 8300000, guid: 9e04e02cc3c37044e8e02773e4d93180, type: 3}
+  - name: CollectSFX
+    clip: {fileID: 8300000, guid: ae487f72816234140ba50645d6c1ba1e, type: 3}
   musicSource: {fileID: 8240367634960605963}
   sfxSource: {fileID: 8240367634419239226}
   x: 1
@@ -239,7 +243,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
