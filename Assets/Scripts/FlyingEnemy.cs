@@ -139,10 +139,10 @@ public class FlyingEnemy : MonoBehaviour
     }
     private void ReturnStartPoint()
     {
-        anim.SetBool("isRunning", true);
+        
         if (!isPatrol)
         {
-            
+            anim.SetBool("isRunning", true);
             transform.position = Vector2.MoveTowards(transform.position, startingPoint, curSpeed * Time.deltaTime);
 
    
