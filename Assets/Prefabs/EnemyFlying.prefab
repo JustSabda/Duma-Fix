@@ -50,7 +50,7 @@ GameObject:
   - component: {fileID: 3883980692372752864}
   m_Layer: 8
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -137,7 +137,8 @@ MonoBehaviour:
   maxSpeed: 2
   chase: 0
   startingPoint: {x: 0, y: 0, z: 0}
-  enemyDamage: 4
+  curSpeed: 0
+  enemyDamage: 9
   player: {fileID: 0}
   rangePatrol: 5
   isPatrol: 0
@@ -228,10 +229,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageable: 1
-  healthAmount: 100
+  healthAmount: 75
   invulnerabilityTime: 0.2
   giveUpwardForce: 0
   currentHealth: 0
+  enemyType: 1
 --- !u!1 &1397664973738823903
 GameObject:
   m_ObjectHideFlags: 0
