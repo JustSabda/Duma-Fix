@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
         isGameOver = false;
         Time.timeScale = 1;
 
+
         if (AudioManager.Instance.x == true)
         {
             if (SceneManager.GetActiveScene().name == ("MainMenu"))
@@ -107,7 +108,7 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex >= PlayerPrefs.GetInt("ReachedIndex"))
         {
             PlayerPrefs.SetInt("ReachedIndex", SceneManager.GetActiveScene().buildIndex + 1);
-            PlayerPrefs.SetInt("UnlockedLevel", PlayerPrefs.GetInt("UnlockedLevel", 2) + 1);
+            PlayerPrefs.SetInt("UnlockedLevel", PlayerPrefs.GetInt("UnlockedLevel", 1) + 1);
             PlayerPrefs.Save();
         }
     }

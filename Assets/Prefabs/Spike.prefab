@@ -159,6 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e196cf018a841340a7f1a261048491e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrap: 1
   damageAmount: 500
 --- !u!212 &8080866525025299045
 SpriteRenderer:

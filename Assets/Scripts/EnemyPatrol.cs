@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class EnemyPatrol : MonoBehaviour
 {
-    
+    public bool isSpider;
+
     public GameObject pointA;
     public GameObject pointB;
     private Rigidbody2D rb;
@@ -29,7 +30,11 @@ public class EnemyPatrol : MonoBehaviour
     [SerializeField] private float colliderDistance;
     [SerializeField] private LayerMask playerLayer;
     [SerializeField] private BoxCollider2D boxCollider;
+    private CapsuleCollider2D capsuleCollider;
+    AudioSource audioEnemy;
 
+    [HideInInspector] public bool isDead = false;
+    bool animDead = false;
 
     // Start is called before the first frame update
     void Start()
@@ -40,84 +45,112 @@ public class EnemyPatrol : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         currentPoint = pointB.transform;
-
+        audioEnemy = GetComponent<AudioSource>();
         anim.SetBool("isRunning", true);
         curSpeed = speed;
-        
+        capsuleCollider = GetComponent<CapsuleCollider2D>();
 
-        
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 point = currentPoint.position - transform.position;
-        
-        collideRight = Physics2D.Raycast(transform.position + new Vector3(0, 0, 0), transform.right, chaseDistance, LayerMask.GetMask("Player"));
-
-        collideAttack =
-    Physics2D.BoxCast(boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance,
-    new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z),
-    0, Vector2.right, 0, playerLayer);
-
-        if (collideRight)
+        if (!isDead)
         {
-            isChasing = true;
-        }
-        else
-        {
-            isChasing = false;
-        }
+            Vector2 point = currentPoint.position - transform.position;
 
-        if (!isAttack)
-        {
-            if (isChasing)
+            collideRight = Physics2D.Raycast(transform.position + new Vector3(0, 0, 0), transform.right, chaseDistance, LayerMask.GetMask("Player"));
+
+            collideAttack =
+        Physics2D.BoxCast(boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance,
+        new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z),
+        0, Vector2.right, 0, playerLayer);
+
+            if (collideRight)
             {
-                if (!collideAttack)
-                {
-                    if (transform.position.x < playerTransform.position.x)
-                    {
-                        if (curSpeed != 0)
-                            rb.velocity = new Vector2(curSpeed + 1, 0);
-                    }
-                    else
-                    {
-                        if (curSpeed != 0)
-                            rb.velocity = new Vector2(-curSpeed - 1, 0);
-                    }
-                }
-                else
-                {
-                    enemyAttack();
-                }
+                isChasing = true;
             }
             else
             {
+                isChasing = false;
+            }
 
-                if (currentPoint == pointB.transform)
+            if (!isAttack)
+            {
+                if (isChasing)
                 {
-                    rb.velocity = new Vector2(curSpeed, 0);
-                    //anim.SetBool("isRunning", true);
+                    if (!collideAttack)
+                    {
+                        if (transform.position.x < playerTransform.position.x)
+                        {
+                            if (curSpeed != 0)
+                                rb.velocity = new Vector2(curSpeed + 1, 0);
+                        }
+                        else
+                        {
+                            if (curSpeed != 0)
+                                rb.velocity = new Vector2(-curSpeed - 1, 0);
+                        }
+                    }
+                    else
+                    {
+                        enemyAttack();
+                    }
                 }
                 else
                 {
-                    rb.velocity = new Vector2(-curSpeed, 0);
-                    //anim.SetBool("isRunning", true);
-                }
+
+                    if (currentPoint == pointB.transform)
+                    {
+                        rb.velocity = new Vector2(curSpeed, 0);
+                        //anim.SetBool("isRunning", true);
+                    }
+                    else
+                    {
+                        rb.velocity = new Vector2(-curSpeed, 0);
+                        //anim.SetBool("isRunning", true);
+                    }
 
 
-                if (Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointB.transform)
-                {
-                    StartCoroutine(Idle());
-                    currentPoint = pointA.transform;
-                }
-                else if (Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointA.transform)
-                {
-                    StartCoroutine(Idle());
-                    currentPoint = pointB.transform;
+                    if (Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointB.transform)
+                    {
+                        StartCoroutine(Idle());
+                        currentPoint = pointA.transform;
+                    }
+                    else if (Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointA.transform)
+                    {
+                        StartCoroutine(Idle());
+                        currentPoint = pointB.transform;
+                    }
                 }
             }
+
+            if (curSpeed != 0)
+                audioEnemy.enabled = true;
+            else
+                audioEnemy.enabled = false;
         }
+        else
+        {
+            curSpeed = 0;
+            audioEnemy.enabled = false;
+            if (!animDead)
+            {
+                anim.SetTrigger("isDead");
+                StartCoroutine(DelayDead(anim.GetCurrentAnimatorStateInfo(0).length + 2f));
+                animDead = true;
+            }
+            rb.bodyType = RigidbodyType2D.Static;
+            capsuleCollider.isTrigger = true;
+        }
+    }
+
+    IEnumerator DelayDead(float _delay)
+    {
+        yield return new WaitForSeconds(_delay);
+        gameObject.SetActive(false);
     }
 
     private IEnumerator Idle()
@@ -125,7 +158,8 @@ public class EnemyPatrol : MonoBehaviour
         curSpeed = 0;
         anim.SetBool("isRunning", false);
         yield return new WaitForSeconds(2f);
-
+    
+        if(!isDead)
         flip();
         curSpeed = speed;
     }
@@ -144,6 +178,10 @@ public class EnemyPatrol : MonoBehaviour
         isAttack = true;
         curSpeed = 0;
         anim.SetTrigger("isAttack");
+        if (!isSpider)
+            AudioManager.Instance.PlaySFX("Enemy1 Attack");
+        else
+            AudioManager.Instance.PlaySFX("Enemy3 Attack");
 
         StartCoroutine(WaitForAnimation(anim.GetCurrentAnimatorStateInfo(0).length));
     }

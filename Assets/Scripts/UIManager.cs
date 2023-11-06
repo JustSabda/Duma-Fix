@@ -30,6 +30,9 @@ public class UIManager : MonoBehaviour
     public GameObject tutorPanel;
     private bool isTutor;
 
+    public GameObject newTutorPanel;
+
+
     public GameObject specialAtkPanel;
     public GameObject specialAtkBtn;
     
@@ -76,8 +79,17 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        
-        
+        if (newTutorPanel != null)
+        {
+            if (newTutorPanel.activeSelf)
+            {
+                Time.timeScale = 0f;
+            }
+            else if(isPaused == false)
+            {
+                Time.timeScale = 1f;
+            }
+        }
         objCount = GameManager.Instance.Objective;
 
         if(objective != null)
@@ -96,6 +108,7 @@ public class UIManager : MonoBehaviour
                     if (isTutor)
                     {
                         tutorPanel.SetActive(true);
+                        isPaused = true;
                         Time.timeScale = 0f;
                         isTutor = false;
                     }
@@ -228,5 +241,8 @@ public class UIManager : MonoBehaviour
 
     }
 
-
+    public void OpenTutor()
+    {
+        newTutorPanel.SetActive(true);
+    }
 }

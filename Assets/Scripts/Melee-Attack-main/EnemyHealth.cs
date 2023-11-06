@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Enemy { Land, Fly }
 public class EnemyHealth : MonoBehaviour
 {
     //Determines if this GameObject should receive damage or not
@@ -21,7 +22,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField]
     private int currentHealth;
 
-    public enum Enemy {Land, Fly};
+    
     public Enemy enemyType;
 
 
@@ -62,16 +63,16 @@ public class EnemyHealth : MonoBehaviour
                 //Caps currentHealth to 0 for cleaner code
                 currentHealth = 0;
                 //Removes GameObject from the scene; this should probably play a dying animation in a method that would handle all the other death logic, but for the test it just disables it from the scene
-                gameObject.SetActive(false);
+                //gameObject.SetActive(false);
 
-                //if (enemyType == Enemy.Land)
-                //{
-                //    enemy1.GetComponent<EnemyPatrol>().IsDead();
-                //}
-                //else
-                //{
-                //    enemy2 = GetComponent<FlyingEnemy>();
-                //}
+                if (enemyType == Enemy.Land)
+                {
+                    enemy1.isDead = true;
+                }
+                else
+                {
+                    enemy2.isDead = true;
+                }
 
             }
             else

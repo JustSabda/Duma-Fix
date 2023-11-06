@@ -9,6 +9,7 @@ public class SceneLoad : MonoBehaviour
     public GameObject selectLevelPanel;
     public GameObject settingPanel;
     public GameObject creditPanel;
+    public GameObject productPanel;
 
     //public GameObject pausePanel;
     public static SceneLoad Instance { get; private set; }
@@ -121,7 +122,7 @@ public class SceneLoad : MonoBehaviour
 
     public void SelectLevelPanel()
     {
-        if (MenuPanel == null || selectLevelPanel == null || creditPanel == null || settingPanel == null)
+        if (MenuPanel == null || selectLevelPanel == null || creditPanel == null || settingPanel == null || productPanel == null)
         {
             return;
         }
@@ -131,12 +132,13 @@ public class SceneLoad : MonoBehaviour
             settingPanel.SetActive(false);
             creditPanel.SetActive(false);
             selectLevelPanel.SetActive(true);
+            productPanel.SetActive(false);
         }
     }
 
     public void SettingPanel()
     {
-        if (MenuPanel == null || selectLevelPanel == null || creditPanel == null || settingPanel == null)
+        if (MenuPanel == null || selectLevelPanel == null || creditPanel == null || settingPanel == null || productPanel == null)
         {
             return;
         }
@@ -146,12 +148,13 @@ public class SceneLoad : MonoBehaviour
             settingPanel.SetActive(true);
             creditPanel.SetActive(false);
             selectLevelPanel.SetActive(false);
+            productPanel.SetActive(false);
         }
     }
    
     public void CreditPanel()
     {
-        if (MenuPanel == null || selectLevelPanel == null || creditPanel == null || settingPanel == null)
+        if (MenuPanel == null || selectLevelPanel == null || creditPanel == null || settingPanel == null || productPanel == null)
         {
             return;
         }
@@ -161,12 +164,30 @@ public class SceneLoad : MonoBehaviour
             settingPanel.SetActive(false);
             creditPanel.SetActive(true);
             selectLevelPanel.SetActive(false);
+            productPanel.SetActive(false);
         }
     }
 
+    public void ProductPanel()
+    {
+        if (MenuPanel == null || selectLevelPanel == null || creditPanel == null || settingPanel == null || productPanel == null)
+        {
+            return;
+        }
+        else
+        {
+            MenuPanel.SetActive(false);
+            settingPanel.SetActive(false);
+            creditPanel.SetActive(false);
+            selectLevelPanel.SetActive(false);
+            productPanel.SetActive(true);
+        }
+    }
+
+
     public void Back()
     {
-        if (MenuPanel == null || selectLevelPanel == null || creditPanel == null || settingPanel == null)
+        if (MenuPanel == null || selectLevelPanel == null || creditPanel == null || settingPanel == null || productPanel == null)
         {
             return;
         }
@@ -176,6 +197,7 @@ public class SceneLoad : MonoBehaviour
             settingPanel.SetActive(false);
             creditPanel.SetActive(false);
             selectLevelPanel.SetActive(false);
+            productPanel.SetActive(false);
         }
     }
 

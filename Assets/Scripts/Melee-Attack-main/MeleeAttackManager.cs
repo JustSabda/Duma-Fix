@@ -114,8 +114,12 @@ public class MeleeAttackManager : Character
     public void Attack()
     {
         if (canAttack)
+        {
+            AudioManager.Instance.PlaySFX("Attack SFX");
             meleeAttack = true;
-        AudioManager.Instance.PlaySFX("Attack SFX");
+        }
+            
+       
     }
 
     public void AttackUp()

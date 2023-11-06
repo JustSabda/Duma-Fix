@@ -70,7 +70,7 @@ public class PlayerMovement : MonoBehaviour
 	#endregion
 
 	[Header("Dash")]
-	[SerializeField] private bool canDash = true;
+	[SerializeField] public bool canDash = true;
 	[HideInInspector]public bool isDashing;
 	private Vector2 dashDir;
 	[SerializeField] private float dashingPower = 24f;
@@ -78,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] private float dashingCooldown = 20f;
 	[SerializeField] private TrailRenderer tr;
 
+	public bool isSlowed;
 
 	[HideInInspector]
 	public bool isDead;
@@ -86,12 +87,15 @@ public class PlayerMovement : MonoBehaviour
 
 	MeleeAttackManager attackManager;
 
+	private AudioSource audioPlayer;
+
     private void Awake()
 	{
 		RB = GetComponent<Rigidbody2D>();
 		character = GetComponent<Character>();
 		anim = GetComponentInChildren<Animator>();
 		attackManager = GetComponent<MeleeAttackManager>();
+		audioPlayer = GetComponent<AudioSource>();
 	}
 
 	private void Start()
@@ -121,7 +125,7 @@ public class PlayerMovement : MonoBehaviour
 		#region INPUT HANDLER
 		if (!isDead)
 		{
-			if (canMove)
+			if (canMove && UIManager.Instance.isPaused == false)
 			{
 				if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
 				{
@@ -143,12 +147,23 @@ public class PlayerMovement : MonoBehaviour
 				if (_moveInput.x != 0)
 				{
 					CheckDirectionToFace(_moveInput.x > 0);
-					if (!IsJumping || !IsWallJumping)
+
+					if (!IsJumping || !IsWallJumping || !_isJumpFalling || !_isJumpCut)
+					{
 						anim.SetBool("PlayerRun", true);
+					}
+
+					if (character.isGrounded)
+						audioPlayer.enabled = true;
+					else
+						audioPlayer.enabled = false;
+						
 				}
 				else
 				{
 					anim.SetBool("PlayerRun", false);
+					audioPlayer.enabled = false;
+	
 				}
 
 				if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown(KeyCode.J))
@@ -176,11 +191,16 @@ public class PlayerMovement : MonoBehaviour
 
 				}
 			}
+            else
+            {
+				ButtonUp();
+				audioPlayer.enabled = false;
+			}
 		}
         else
         {
 			GameManager.Instance.isGameOver = true;
-        }
+		}
 		#endregion
 
 		#region COLLISION CHECKS
@@ -404,6 +424,7 @@ public class PlayerMovement : MonoBehaviour
 			Run(1);
 
 
+
 		//Handle Slide
 		if (IsSliding)
 			Slide();
@@ -435,6 +456,19 @@ public class PlayerMovement : MonoBehaviour
     private void Run(float lerpAmount)
 	{
 		//Calculate the direction we want to move in and our desired velocity
+		float curMaxSpeed;
+
+        if (isSlowed)
+        {
+			curMaxSpeed = Data.runMaxSpeed / 2;
+        }
+        else
+        {
+			curMaxSpeed = Data.runMaxSpeed;
+
+		}
+
+
 		float targetSpeed = _moveInput.x * Data.runMaxSpeed;
 		//We can reduce are control using Lerp() this smooths changes to are direction and speed
 		targetSpeed = Mathf.Lerp(RB.velocity.x, targetSpeed, lerpAmount);

@@ -20,7 +20,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 568a4cef817035041858e7bb16a71265, type: 3}
     - {fileID: 21300000, guid: 3db60dfa7ba65384689e8cb4df8e40fb, type: 3}
     - {fileID: 21300000, guid: dad0eba71c49f8e43b6fa8c5d2c26189, type: 3}
-  m_FillTexture: {fileID: 2800000, guid: a2efc4c3416282a4ca0b51562df23703, type: 3}
+  m_FillTexture: {fileID: 2800000, guid: ed1006625398e8d4ba0d87bf07fd145c, type: 3}
   m_CornerSprites:
   - m_CornerType: 0
     m_Sprites:

@@ -32,10 +32,16 @@ public class FlyingEnemy : MonoBehaviour
     [Header("Collider Parameters")]
     [SerializeField] private float colliderDistance;
     [SerializeField] private BoxCollider2D boxCollider;
+    private Rigidbody2D rb;
 
     private Health playerHealth;
 
     private bool collide;
+    AudioSource audioEnemy;
+    [HideInInspector]public bool isDead = false;
+    bool animDead = false;
+
+    bool isGrounded;
 
     // Start is called before the first frame update
     void Start()
@@ -46,32 +52,71 @@ public class FlyingEnemy : MonoBehaviour
         anim = GetComponent<Animator>();
         startingPoint = transform.position;
         startingY = startingPoint.y;
-
+        rb = GetComponent<Rigidbody2D>();
         isPatrol = true;
         anim.SetBool("isRunning", true);
         curSpeed = maxSpeed;
+        audioEnemy = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        collide =
-    Physics2D.BoxCast(boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance,
-    new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z),
-    0, Vector2.right, 0, playerLayer);
-
-        if (player == null)
-            return;
-        if (!isAttack)
+        if (!isDead)
         {
-            if (chase == true)
-                Chase();
-            else
-                ReturnStartPoint();
-        }
-        Flip();
+            collide =
+        Physics2D.BoxCast(boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance,
+        new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z),
+        0, Vector2.right, 0, playerLayer);
 
-        cooldownTimer += Time.deltaTime;
+            if (player == null)
+                return;
+            if (!isAttack)
+            {
+                if (chase == true)
+                    Chase();
+                else
+                    ReturnStartPoint();
+            }
+            Flip();
+
+            cooldownTimer += Time.deltaTime;
+        }
+        else
+        {
+            curSpeed = 0;
+            if (!isGrounded)
+                rb.bodyType = RigidbodyType2D.Dynamic;
+            else
+                rb.bodyType = RigidbodyType2D.Static;
+            audioEnemy.enabled = false;
+            if (!animDead && isGrounded)
+            {
+                anim.SetTrigger("isDead");
+                StartCoroutine(DelayDead(anim.GetCurrentAnimatorStateInfo(0).length + 2f));
+                animDead = true;
+                boxCollider.isTrigger = true;
+            }
+            
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Terrain"))
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
+    }
+
+    IEnumerator DelayDead(float _delay)
+    {
+        yield return new WaitForSeconds(_delay);
+        gameObject.SetActive(false);
     }
 
     private void Chase()
@@ -160,6 +205,7 @@ public class FlyingEnemy : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(!isDead)
         Patrol();
     }
 

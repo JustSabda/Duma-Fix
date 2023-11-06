@@ -5,6 +5,8 @@ using UnityEngine;
 //Testing script meant to damage the player and apply damage amount; this script is something you can use as a foundation for something that would actually apply damage; as long as it has a 2D Collider that would be able to 
 public class DamageField : MonoBehaviour
 {
+    public bool isTrap;
+
     //The amount of damage that needs to be negated from the player's currentHealth value
     [SerializeField]
     private int damageAmount;
@@ -12,6 +14,10 @@ public class DamageField : MonoBehaviour
     private BoxCollider2D col;
     private EdgeCollider2D col1;
     private CapsuleCollider2D col2;
+
+    private EnemyPatrol enemy1;
+    private FlyingEnemy enemy2;
+    private EnemyHealth enemyHealth;
 
     //I use OnEnable to set these variables so if you want to use this script on a melee weapon or projectile gameObject, you can still ensure the variables are correct when those items are enabled during their use
     private void OnEnable()
@@ -33,20 +39,60 @@ public class DamageField : MonoBehaviour
             if (col2 != null)
                 col2.isTrigger = true;
         }
+
+        if (!isTrap)
+        {
+            enemyHealth = GetComponent<EnemyHealth>();
+            if(enemyHealth.enemyType == Enemy.Land)
+            {
+                enemy1 = GetComponent<EnemyPatrol>();
+            }
+            else
+            {
+                enemy2 = GetComponent<FlyingEnemy>();
+            }
+        }
        
     }
 
+    
 
     //This method is called when this object enters the player
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
-        if(collision.gameObject.tag == "Player")
+        if (!isTrap)
         {
-            Health health = collision.GetComponent<Health>();
-            health.enemy = gameObject;
-            health.Damage(damageAmount);
+            if (enemy1 != null)
+            {
+                if (collision.gameObject.tag == "Player" && enemy1.isDead == false)
+                {
+                    Health health = collision.GetComponent<Health>();
+                    health.enemy = gameObject;
+                    health.Damage(damageAmount);
+                }
+            }
+
+            if (enemy2 != null)
+            {
+                if (collision.gameObject.tag == "Player" && enemy2.isDead == false)
+                {
+                    Health health = collision.GetComponent<Health>();
+                    health.enemy = gameObject;
+                    health.Damage(damageAmount);
+                }
+            }
         }
+        else
+        {
+            if (collision.gameObject.tag == "Player")
+            {
+                Health health = collision.GetComponent<Health>();
+                health.enemy = gameObject;
+                health.Damage(damageAmount);
+            }
+        }
+
+
         //Quick reference to the player so the game is better optimized
         //GameObject player = GameObject.FindWithTag("Player");
         //Quick reference to the Health script on the player for optimization
