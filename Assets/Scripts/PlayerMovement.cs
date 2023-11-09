@@ -469,7 +469,7 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 
-		float targetSpeed = _moveInput.x * Data.runMaxSpeed;
+		float targetSpeed = _moveInput.x * curMaxSpeed;
 		//We can reduce are control using Lerp() this smooths changes to are direction and speed
 		targetSpeed = Mathf.Lerp(RB.velocity.x, targetSpeed, lerpAmount);
 
