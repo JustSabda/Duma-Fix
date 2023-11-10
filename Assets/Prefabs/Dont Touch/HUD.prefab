@@ -3479,7 +3479,7 @@ MonoBehaviour:
   tutorPanel: {fileID: 8170360684616880354}
   newTutorPanel: {fileID: 6859739280802283}
   specialAtkPanel: {fileID: 2980971991891759719}
-  specialAtkBtn: {fileID: 0}
+  specialAtkBtn: {fileID: 5043326940243011264}
   musicBtnOn: {fileID: 5562491804258415560}
   musicBtnOff: {fileID: 7438688098218800693}
   SFXBtnOn: {fileID: 4837476347900747902}

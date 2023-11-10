@@ -53,10 +53,14 @@ public class EnemyHealth : MonoBehaviour
         //First checks to see if the player is currently in an invulnerable state; if not it runs the following logic.
         if (damageable && !hit && currentHealth > 0)
         {
+            
+
             //First sets hit to true
             hit = true;
             //Reduces currentHealthPoints by the amount value that was set by whatever script called this method, for this tutorial in the OnTriggerEnter2D() method
             currentHealth -= amount;
+
+
             //If currentHealthPoints is below zero, player is dead, and then we handle all the logic to manage the dead state
             if (currentHealth <= 0)
             {
@@ -77,6 +81,8 @@ public class EnemyHealth : MonoBehaviour
             }
             else
             {
+
+
                 //Coroutine that runs to allow the enemy to receive damage again
                 StartCoroutine(TurnOffHit());
             }
@@ -105,6 +111,11 @@ public class EnemyHealth : MonoBehaviour
         {
 
             enemy1.curSpeed = enemy1.speed;
+            if(enemy1.collideRight == false)
+            {
+                enemy1.flip();
+            }
+
         }
         else
         {

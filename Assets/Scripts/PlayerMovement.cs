@@ -82,6 +82,7 @@ public class PlayerMovement : MonoBehaviour
 
 	[HideInInspector]
 	public bool isDead;
+	bool isDeadAnim = false;
 
 	private Animator anim;
 
@@ -199,6 +200,15 @@ public class PlayerMovement : MonoBehaviour
 		}
         else
         {
+			ButtonUp();
+            if (!isDeadAnim)
+            {
+				anim.SetTrigger("PlayerDie");
+				isDeadAnim = true;
+			}
+			
+			
+			
 			GameManager.Instance.isGameOver = true;
 		}
 		#endregion

@@ -19,7 +19,7 @@ public class EnemyPatrol : MonoBehaviour
     public bool isChasing;
     public float chaseDistance;
 
-    private bool collideRight;
+    [HideInInspector]public bool collideRight;
 
     [Header("Enemy Attack")]
     private bool collideAttack;
@@ -35,6 +35,8 @@ public class EnemyPatrol : MonoBehaviour
 
     [HideInInspector] public bool isDead = false;
     bool animDead = false;
+
+    public enum State { Idle , Moving }
 
     // Start is called before the first frame update
     void Start()
@@ -96,7 +98,13 @@ public class EnemyPatrol : MonoBehaviour
                     }
                     else
                     {
+                        if(GameManager.Instance.isGameOver == false)
                         enemyAttack();
+                        else
+                        {
+                            curSpeed = 0;
+                            anim.SetBool("isRunning", false);
+                        }
                     }
                 }
                 else
@@ -157,14 +165,21 @@ public class EnemyPatrol : MonoBehaviour
     {
         curSpeed = 0;
         anim.SetBool("isRunning", false);
+
+
         yield return new WaitForSeconds(2f);
-    
-        if(!isDead)
-        flip();
-        curSpeed = speed;
+        if(!isDead && isChasing)
+        yield break;
+
+        if (!isDead && isChasing)
+        {
+            flip();
+            curSpeed = speed;
+        }
+
     }
 
-    private void flip()
+    public void flip()
     {
         anim.SetBool("isRunning", true);
         Vector3 localScale = transform.localScale;
@@ -184,6 +199,7 @@ public class EnemyPatrol : MonoBehaviour
             AudioManager.Instance.PlaySFX("Enemy3 Attack");
 
         StartCoroutine(WaitForAnimation(anim.GetCurrentAnimatorStateInfo(0).length));
+        anim.SetBool("isRunning", false);
     }
 
     private void DamagePlayer()
@@ -197,10 +213,12 @@ public class EnemyPatrol : MonoBehaviour
 
     IEnumerator WaitForAnimation(float _delay)
     {
-        yield return new WaitForSeconds(_delay);
-        isAttack = false;
-        curSpeed = speed;
-        anim.SetBool("isRunning", true);
+
+            yield return new WaitForSeconds(_delay);
+            isAttack = false;
+            curSpeed = speed;
+            anim.SetBool("isRunning", true);
+        
     }
 
 

@@ -87,18 +87,28 @@ public class GameManager : MonoBehaviour
             {
                 if (isGameOver)
                 {
-                    Time.timeScale = 0; 
-                    if(!isLose)
-                    AudioManager.Instance.PlaySFX("Lose");
-
-                    isLose = true;
+                    StartCoroutine(DeadPending());
                 }
                 else
                 {
-                    Time.timeScale = 1;
+                    Time.timeScale = 1f;
                 }
             }
         }
+
+    }
+
+    IEnumerator DeadPending()
+    {
+        if (!isLose)
+            AudioManager.Instance.PlaySFX("Lose");
+        isLose = true;
+
+        yield return new WaitForSeconds(2f);
+        UIManager.Instance.panelLose.SetActive(true);
+        Time.timeScale = 0f;
+
+
 
     }
 

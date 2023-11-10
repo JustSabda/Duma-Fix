@@ -81,14 +81,16 @@ public class UIManager : MonoBehaviour
     {
         if (newTutorPanel != null)
         {
+
             if (newTutorPanel.activeSelf)
             {
                 Time.timeScale = 0f;
             }
-            else if(isPaused == false)
+            else if (isPaused == false && GameManager.Instance.isGameOver == false)
             {
                 Time.timeScale = 1f;
             }
+
         }
         objCount = GameManager.Instance.Objective;
 
@@ -171,7 +173,7 @@ public class UIManager : MonoBehaviour
 
         if (GameManager.Instance.isGameOver == true && panelLose != null)
         {
-            panelLose.SetActive(true);
+            //panelLose.SetActive(true);
         }
 
     }
