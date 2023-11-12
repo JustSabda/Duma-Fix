@@ -175,6 +175,7 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   isChasing: 0
   chaseDistance: 4
+  distanceTall: -0.3
   collideRight: 0
   enemyDamage: 5
   range: 0.85

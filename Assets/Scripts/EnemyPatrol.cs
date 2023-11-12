@@ -18,6 +18,7 @@ public class EnemyPatrol : MonoBehaviour
     public Transform playerTransform;
     public bool isChasing;
     public float chaseDistance;
+    public float distanceTall;
 
     [HideInInspector]public bool collideRight;
 
@@ -63,7 +64,7 @@ public class EnemyPatrol : MonoBehaviour
         {
             Vector2 point = currentPoint.position - transform.position;
 
-            collideRight = Physics2D.Raycast(transform.position + new Vector3(0, 0, 0), transform.right, chaseDistance, LayerMask.GetMask("Player"));
+            collideRight = Physics2D.Raycast(transform.position + new Vector3(0, distanceTall, 0), transform.right, chaseDistance, LayerMask.GetMask("Player"));
 
             collideAttack =
         Physics2D.BoxCast(boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance,
@@ -230,9 +231,9 @@ public class EnemyPatrol : MonoBehaviour
         Gizmos.DrawLine(pointA.transform.position, pointB.transform.position);
 
         if (collideRight)
-            Debug.DrawRay(transform.position + new Vector3(0, 0, 0), transform.right * chaseDistance, Color.red);
+            Debug.DrawRay(transform.position + new Vector3(0, distanceTall, 0), transform.right * chaseDistance, Color.red);
         else
-            Debug.DrawRay(transform.position + new Vector3(0, 0, 0), transform.right * chaseDistance, Color.white);
+            Debug.DrawRay(transform.position + new Vector3(0, distanceTall, 0), transform.right * chaseDistance, Color.white);
 
     }
 
