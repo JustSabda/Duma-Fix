@@ -229,10 +229,13 @@ public class UIManager : MonoBehaviour
 
     public void Pause()
     {
-        isPaused = true;
-        pausePanel.SetActive(true);
-        settingPanel.SetActive(false);
-        Time.timeScale = 0f;
+        if (GameManager.Instance.isGameOver == true)
+        {
+            isPaused = true;
+            pausePanel.SetActive(true);
+            settingPanel.SetActive(false);
+            Time.timeScale = 0f;
+        }
     }
     public void Resume()
     {

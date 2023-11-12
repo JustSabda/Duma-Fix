@@ -82,9 +82,9 @@ public class PlayerMovement : MonoBehaviour
 
 	[HideInInspector]
 	public bool isDead;
-	bool isDeadAnim = false;
+	[HideInInspector]public bool isDeadAnim = false;
 
-	private Animator anim;
+	[HideInInspector]public Animator anim;
 
 	MeleeAttackManager attackManager;
 
@@ -106,6 +106,7 @@ public class PlayerMovement : MonoBehaviour
 		GameManager.Instance.respawnPoint = transform.position;
 		isDead = false;
 		canMove = true;
+
 	}
 
 	private void Update()
@@ -126,6 +127,8 @@ public class PlayerMovement : MonoBehaviour
 		#region INPUT HANDLER
 		if (!isDead)
 		{
+			anim.SetBool("PlayerDie", false);
+
 			if (canMove && UIManager.Instance.isPaused == false)
 			{
 				if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
@@ -158,13 +161,13 @@ public class PlayerMovement : MonoBehaviour
 						audioPlayer.enabled = true;
 					else
 						audioPlayer.enabled = false;
-						
+
 				}
 				else
 				{
 					anim.SetBool("PlayerRun", false);
 					audioPlayer.enabled = false;
-	
+
 				}
 
 				if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown(KeyCode.J))
@@ -177,38 +180,40 @@ public class PlayerMovement : MonoBehaviour
 					OnJumpUpInput();
 				}
 
-                if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) && canDash)
-                {
+				if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) && canDash)
+				{
 					StartCoroutine(Dash());
-                }
+				}
 
-                if (isDashing)
-                {
+				if (isDashing)
+				{
 					Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), true);
 				}
-                else
-                {
+				else
+				{
 					Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), false);
 
 				}
 			}
-            else
-            {
+			else
+			{
 				ButtonUp();
 				audioPlayer.enabled = false;
 			}
 		}
-        else
-        {
+		else
+		{
 			ButtonUp();
+
             if (!isDeadAnim)
             {
 				anim.SetTrigger("PlayerDie");
 				isDeadAnim = true;
 			}
-			
-			
-			
+
+
+
+
 			GameManager.Instance.isGameOver = true;
 		}
 		#endregion
@@ -665,11 +670,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+		var healthPlayer = GetComponent<Health>();
         if(collision.tag == "FallDetector")
         {
 			//transform.position = respawnPoint;
-			GameManager.Instance.isGameOver = true;
-			isDead = true;
+			//GameManager.Instance.isGameOver = true;
+			//isDead = true;
+
+			healthPlayer.currentHealthPoints = 0;
         }
 		else if(collision.tag == "Checkpoint")
         {

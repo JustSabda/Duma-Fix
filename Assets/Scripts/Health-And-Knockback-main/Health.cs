@@ -74,6 +74,19 @@ public class Health : Character
         player = GetComponent<PlayerMovement>();
     }
 
+    private void Update()
+    {
+        if (currentHealthPoints <= 0)
+        {
+            currentHealthPoints = 0;
+            character.isDead = true;
+
+            GameManager.Instance.isGameOver = true;
+
+
+
+        }
+    }
     private void FixedUpdate()
     {
         //The hit bool is set to true in the DamageField script, and changed to false later in this script; this manages if knockback should be applied
@@ -98,7 +111,7 @@ public class Health : Character
 
 
             //First sets invulnerable to true
-            hit = true;
+
             //Reduces currentHealthPoints by the amount value that was set by whatever script called this method, for this tutorial in the OnTriggerEnter2D() method
             currentHealthPoints -= amount;
 
@@ -114,11 +127,14 @@ public class Health : Character
                 //player.isDead = true;
                 GameManager.Instance.isGameOver = true;
                 //StartCoroutine(GameOver());
-                
                 //Play the dead animation
                 //anim.SetBool("Dead", true);
 
 
+            }
+            else
+            {
+                hit = true;
             }
         }
     }
@@ -134,6 +150,10 @@ public class Health : Character
     //This method will move the player in a backwards slightly upwards direction when taking damage; this is a very common feature in nearly all platformers
     private void HandleKnockBack()
     {
+        if (GameManager.Instance.isGameOver == true)
+            return;
+
+
         //Bool that lets other scripts know the player is currently taking damage; if you don't have a Character script, then use the commented out variables I provided in this solution so you can manage this state
         character.takingDamage = true;
         //Plays the damage animation

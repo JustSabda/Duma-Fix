@@ -44,12 +44,12 @@ GameObject:
   - component: {fileID: 1397664973514777642}
   - component: {fileID: 1397664973514777641}
   - component: {fileID: 1397664973514777640}
+  - component: {fileID: 3883980692372752864}
+  - component: {fileID: 4036950932849554587}
   - component: {fileID: 1397664973514777652}
   - component: {fileID: 1397664973514777643}
   - component: {fileID: 6168710428526960571}
-  - component: {fileID: 3883980692372752864}
   - component: {fileID: 4335672270838890887}
-  - component: {fileID: 4036950932849554587}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Enemy
@@ -152,6 +152,38 @@ MonoBehaviour:
   colliderDistance: 1.15
   boxCollider: {fileID: 1397664973514777643}
   isDead: 0
+--- !u!114 &3883980692372752864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397664973514777647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7435f5a11eccb7b4aa857f5267dc66d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageable: 1
+  healthAmount: 75
+  invulnerabilityTime: 0.2
+  giveUpwardForce: 0
+  currentHealth: 0
+  enemyType: 1
+--- !u!114 &4036950932849554587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397664973514777647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e196cf018a841340a7f1a261048491e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isTrap: 0
+  damageAmount: 9
 --- !u!50 &1397664973514777652
 Rigidbody2D:
   serializedVersion: 4
@@ -219,24 +251,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!114 &3883980692372752864
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1397664973514777647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7435f5a11eccb7b4aa857f5267dc66d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageable: 1
-  healthAmount: 75
-  invulnerabilityTime: 0.2
-  giveUpwardForce: 0
-  currentHealth: 0
-  enemyType: 1
 --- !u!82 &4335672270838890887
 AudioSource:
   m_ObjectHideFlags: 0
@@ -333,20 +347,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &4036950932849554587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1397664973514777647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e196cf018a841340a7f1a261048491e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isTrap: 0
-  damageAmount: 9
 --- !u!1 &1397664973738823903
 GameObject:
   m_ObjectHideFlags: 0

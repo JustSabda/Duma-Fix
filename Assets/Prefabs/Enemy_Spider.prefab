@@ -73,11 +73,11 @@ GameObject:
   - component: {fileID: 166551178802532458}
   - component: {fileID: 166551178802532460}
   - component: {fileID: 166551178802532459}
+  - component: {fileID: 8804885211866668610}
+  - component: {fileID: 5549235707224581498}
   - component: {fileID: 166551178802532462}
   - component: {fileID: 1557667531706792111}
   - component: {fileID: 1142495522975521646}
-  - component: {fileID: 8804885211866668610}
-  - component: {fileID: 5549235707224581498}
   - component: {fileID: 3354953383555722435}
   - component: {fileID: 6266869199471210661}
   m_Layer: 8
@@ -169,11 +169,13 @@ MonoBehaviour:
   isSpider: 1
   pointA: {fileID: 166551178356700899}
   pointB: {fileID: 166551178674394769}
+  currentPoint: {fileID: 0}
   speed: 1
   curSpeed: 0
   playerTransform: {fileID: 0}
   isChasing: 0
   chaseDistance: 4
+  collideRight: 0
   enemyDamage: 5
   range: 0.85
   colliderDistance: 8.16
@@ -182,6 +184,38 @@ MonoBehaviour:
     m_Bits: 128
   boxCollider: {fileID: 3354953383555722435}
   isDead: 0
+--- !u!114 &8804885211866668610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166551178802532456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e196cf018a841340a7f1a261048491e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isTrap: 0
+  damageAmount: 5
+--- !u!114 &5549235707224581498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166551178802532456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7435f5a11eccb7b4aa857f5267dc66d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageable: 1
+  healthAmount: 135
+  invulnerabilityTime: 0.2
+  giveUpwardForce: 0
+  currentHealth: 0
+  enemyType: 0
 --- !u!50 &166551178802532462
 Rigidbody2D:
   serializedVersion: 4
@@ -239,38 +273,6 @@ CapsuleCollider2D:
   m_Offset: {x: -0.66988516, y: -0.12959474}
   m_Size: {x: 9.659937, y: 7.3034277}
   m_Direction: 1
---- !u!114 &8804885211866668610
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 166551178802532456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e196cf018a841340a7f1a261048491e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isTrap: 0
-  damageAmount: 5
---- !u!114 &5549235707224581498
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 166551178802532456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7435f5a11eccb7b4aa857f5267dc66d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageable: 1
-  healthAmount: 45
-  invulnerabilityTime: 0.2
-  giveUpwardForce: 0
-  currentHealth: 0
-  enemyType: 0
 --- !u!61 &3354953383555722435
 BoxCollider2D:
   m_ObjectHideFlags: 0

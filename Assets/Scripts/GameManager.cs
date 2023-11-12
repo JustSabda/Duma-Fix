@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public Vector3 respawnPoint;
 
-    bool isLose;
+    [HideInInspector]public bool isLose;
     
 
     private void Awake()
@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
             Instance = this;
         }
 
-        if (SceneManager.GetActiveScene().name != ("MainMenu"))
+        if (SceneManager.GetActiveScene().name != ("MainMenu") && (SceneManager.GetActiveScene().name != ("Cutscene Prolog")) )
         {
             player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
             playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
@@ -59,6 +59,11 @@ public class GameManager : MonoBehaviour
                 AudioManager.Instance.PlayMusic("MainMenu");
             }
 
+            if (SceneManager.GetActiveScene().name == ("Cutscene Prolog"))
+            {
+                AudioManager.Instance.PlayMusic("Prolog");
+            }
+
             if (SceneManager.GetActiveScene().name == ("Level 1") || SceneManager.GetActiveScene().name == ("Level 2") || SceneManager.GetActiveScene().name == ("Level 3"))
             {
                 AudioManager.Instance.PlayMusic("LevelGame");
@@ -71,7 +76,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
-        if (SceneManager.GetActiveScene().name != ("MainMenu"))
+        if (SceneManager.GetActiveScene().name != ("MainMenu") && SceneManager.GetActiveScene().name != ("Cutscene Prolog"))
         {
 
             if (Objective == victoryCondition)
@@ -85,7 +90,7 @@ public class GameManager : MonoBehaviour
 
             if (!UIManager.Instance.isPaused)
             {
-                if (isGameOver)
+                if (isGameOver && isLose == false)
                 {
                     StartCoroutine(DeadPending());
                 }
@@ -137,14 +142,16 @@ public class GameManager : MonoBehaviour
         player.transform.position = respawnPoint;
         //player.RB.velocity = Vector2.zero;
        
-        StartCoroutine(WaitSecond());
-
+        //StartCoroutine(WaitSecond());
+        player.isDeadAnim = false;
         Rest();
     }
 
     public void Rest()
     {
         playerHealth.currentHealthPoints = playerHealth.maxHealthPoints;
+        player.anim.Rebind();
+        player.anim.Update(0f);
     }
 
     IEnumerator WaitSecond()
@@ -152,7 +159,7 @@ public class GameManager : MonoBehaviour
         player.RB.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
 
         player.RB.AddForce( new Vector2(0, 1) * 50);
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(0.2f);
 
         player.RB.constraints = RigidbodyConstraints2D.FreezeRotation;
     }

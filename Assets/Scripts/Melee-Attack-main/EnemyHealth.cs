@@ -114,6 +114,15 @@ public class EnemyHealth : MonoBehaviour
             if(enemy1.collideRight == false)
             {
                 enemy1.flip();
+
+                if(enemy1.currentPoint == enemy1.pointA.transform)
+                {
+                    enemy1.currentPoint = enemy1.pointB.transform;
+                }
+                else if (enemy1.currentPoint == enemy1.pointB.transform)
+                {
+                    enemy1.currentPoint = enemy1.pointA.transform;
+                }
             }
 
         }

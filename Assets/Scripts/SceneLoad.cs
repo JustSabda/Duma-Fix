@@ -56,16 +56,16 @@ public class SceneLoad : MonoBehaviour
     private void Start()
     {
         
-        if (AudioManager.Instance.x == true)
-        {
-            if (SceneManager.GetActiveScene().name == ("MainMenu"))
+        //if (AudioManager.Instance.x == true)
+        //{
+        //    if (SceneManager.GetActiveScene().name == ("MainMenu"))
 
-            {
-                AudioManager.Instance.PlayMusic("MainMenu");
-            }
+        //    {
+        //        AudioManager.Instance.PlayMusic("MainMenu");
+        //    }
 
-            AudioManager.Instance.x = false;
-        }
+        //    AudioManager.Instance.x = false;
+        //}
         
     }
 

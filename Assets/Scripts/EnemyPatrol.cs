@@ -10,7 +10,7 @@ public class EnemyPatrol : MonoBehaviour
     public GameObject pointB;
     private Rigidbody2D rb;
     private Animator anim;
-    private Transform currentPoint;
+    [HideInInspector]public Transform currentPoint;
     public float speed;
     public float curSpeed;
 
@@ -113,12 +113,10 @@ public class EnemyPatrol : MonoBehaviour
                     if (currentPoint == pointB.transform)
                     {
                         rb.velocity = new Vector2(curSpeed, 0);
-                        //anim.SetBool("isRunning", true);
                     }
                     else
                     {
                         rb.velocity = new Vector2(-curSpeed, 0);
-                        //anim.SetBool("isRunning", true);
                     }
 
 
@@ -168,14 +166,13 @@ public class EnemyPatrol : MonoBehaviour
 
 
         yield return new WaitForSeconds(2f);
-        if(!isDead && isChasing)
-        yield break;
-
         if (!isDead && isChasing)
-        {
-            flip();
-            curSpeed = speed;
-        }
+            yield break;
+
+
+        flip();
+        curSpeed = speed;
+
 
     }
 
@@ -185,7 +182,11 @@ public class EnemyPatrol : MonoBehaviour
         Vector3 localScale = transform.localScale;
         localScale.x *= -1;
         chaseDistance *= -1;
+
+
+        
         transform.localScale = localScale;
+
     }
 
     void enemyAttack()
