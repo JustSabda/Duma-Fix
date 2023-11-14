@@ -6,15 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Fix/MainMenu.unity
+    path: Assets/Scenes/Fix/Old/MainMenu 1.unity
     guid: 2b1c30f309a74104c96007575ac53a54
+  - enabled: 1
+    path: Assets/Scenes/Fix/Cutscene Prolog.unity
+    guid: c335277811a5cf645ad49b81bfa377c6
   - enabled: 1
     path: Assets/Scenes/Fix/Level 1.unity
     guid: 94d63f86acf245b44bae65946816ece2
   - enabled: 1
     path: Assets/Scenes/Fix/Level 2.unity
-    guid: ecd84d9370ddafd4d9ac7218420964a6
+    guid: 309d01019a1ec084cb8504eb79b295b2
   - enabled: 1
     path: Assets/Scenes/Fix/Level 3.unity
-    guid: 3542fd7b62e43164bb82ecf41c170008
+    guid: 743cf8cfeb8f57f45bcb3feb548b993a
+  - enabled: 1
+    path: Assets/Scenes/Fix/Cutscene Epilog.unity
+    guid: ceef95f8e73635b49b06ec0864250fa1
   m_configObjects: {}

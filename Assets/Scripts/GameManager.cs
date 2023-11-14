@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
             Instance = this;
         }
 
-        if (SceneManager.GetActiveScene().name != ("MainMenu") && (SceneManager.GetActiveScene().name != ("Cutscene Prolog")) )
+        if (SceneManager.GetActiveScene().name != ("MainMenu") && (SceneManager.GetActiveScene().name != ("Cutscene Prolog"))&& SceneManager.GetActiveScene().name != ("Cutscene Epilog") )
         {
             player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
             playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
@@ -64,6 +64,11 @@ public class GameManager : MonoBehaviour
                 AudioManager.Instance.PlayMusic("Prolog");
             }
 
+            if(SceneManager.GetActiveScene().name == ("Cutscene Epilog"))
+            {
+                AudioManager.Instance.PlayMusic("Epilog");
+            }
+
             if (SceneManager.GetActiveScene().name == ("Level 1") || SceneManager.GetActiveScene().name == ("Level 2") || SceneManager.GetActiveScene().name == ("Level 3"))
             {
                 AudioManager.Instance.PlayMusic("LevelGame");
@@ -76,7 +81,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
-        if (SceneManager.GetActiveScene().name != ("MainMenu") && SceneManager.GetActiveScene().name != ("Cutscene Prolog"))
+        if (SceneManager.GetActiveScene().name != ("MainMenu") && SceneManager.GetActiveScene().name != ("Cutscene Prolog") && SceneManager.GetActiveScene().name != ("Cutscene Epilog"))
         {
 
             if (Objective == victoryCondition)

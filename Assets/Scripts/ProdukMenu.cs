@@ -19,7 +19,7 @@ public class ProdukMenu : MonoBehaviour
             productsOn[i].SetActive(false);
             productsOff[i].SetActive(true);
         }
-        for (int i = 0; i < unlockedLevel; i++)
+        for (int i = 0; i < unlockedLevel - 1; i++)
         {
             productsOn[i].SetActive(true);
             productsOff[i].SetActive(false);

@@ -90,6 +90,7 @@ public class PlayerMovement : MonoBehaviour
 
 	private AudioSource audioPlayer;
 
+
     private void Awake()
 	{
 		RB = GetComponent<Rigidbody2D>();
@@ -128,6 +129,11 @@ public class PlayerMovement : MonoBehaviour
 		if (!isDead)
 		{
 			anim.SetBool("PlayerDie", false);
+
+
+
+
+
 
 			if (canMove && UIManager.Instance.isPaused == false)
 			{
@@ -354,15 +360,22 @@ public class PlayerMovement : MonoBehaviour
 			//Default gravity if standing on a platform or moving upwards
 			SetGravityScale(Data.gravityScale);
 		}
-        #endregion
+		#endregion
 
-        if (attackManager.meleeAttack == true)
-        {
-            //canMove = false;
-            anim.SetTrigger("PlayerAttack");
-            //StartCoroutine(Slash(anim.GetCurrentAnimatorStateInfo(0).length));
-        }
-    }
+
+	}
+
+
+	public void AnimSlash()
+    {
+        if (!isDead && attackManager.meleeAttack == true)
+			//canMove = false;
+			anim.SetTrigger("PlayerAttack");
+
+			//attackManager.animSlash = true;
+			//StartCoroutine(Slash(anim.GetCurrentAnimatorStateInfo(0).length));
+
+	}
 
 	public void DashBtn()
     {
@@ -374,6 +387,8 @@ public class PlayerMovement : MonoBehaviour
 		canMove = false;
 		isDashing = true;
 
+		AudioManager.Instance.PlaySFX("Dash SFX");
+	
 		UIManager.Instance.specialAtkBtn.GetComponent<Button>().interactable = false;
 		//float originalGravity = RB.gravityScale;
 		//RB.gravityScale = 0;

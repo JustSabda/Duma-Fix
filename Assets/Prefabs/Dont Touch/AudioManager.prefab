@@ -52,7 +52,9 @@ MonoBehaviour:
   - name: LevelGame
     clip: {fileID: 8300000, guid: 9149c16ef12fd0d459a9f6e0dcad3330, type: 3}
   - name: Prolog
-    clip: {fileID: 8300000, guid: 884243fa0eeb21a4bbcd0ecc584ff3e2, type: 3}
+    clip: {fileID: 8300000, guid: dd42a046d16befb4bab2c6af77c48e7d, type: 3}
+  - name: Epilog
+    clip: {fileID: 8300000, guid: 176be1400091c6b4c9a018ce61337236, type: 3}
   sfxSounds:
   - name: Win
     clip: {fileID: 8300000, guid: d8d1720aad399634ab26a4964a8ac2a2, type: 3}

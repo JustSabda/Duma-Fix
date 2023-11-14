@@ -13,6 +13,10 @@ public class LevelMenu : MonoBehaviour
     {
         ButtonToArray();
         int unlockedLevel = PlayerPrefs.GetInt("UnlockedLevel", 1);
+        if(unlockedLevel > 3)
+        {
+            unlockedLevel = 3;
+        }
         for (int i = 0; i < buttons.Length; i++)
         {
             buttons[i].interactable = false;
@@ -26,6 +30,8 @@ public class LevelMenu : MonoBehaviour
     {
         string levelName = "Level " + levelId;
         SceneManager.LoadScene(levelName);
+
+        AudioManager.Instance.x = true;
     }
 
     void ButtonToArray()

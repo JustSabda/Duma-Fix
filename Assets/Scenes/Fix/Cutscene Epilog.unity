@@ -149,7 +149,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 37672060}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: e8fbc8f2d32ec5a4f83f46d40cd438ff, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: b7bcb0dc1e7af2244b2cbdb33f5faf75, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -390,7 +390,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 956666657}
         m_TargetAssemblyTypeName: SceneLoad, Assembly-CSharp
-        m_MethodName: NextLevel
+        m_MethodName: BackMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -179,15 +179,18 @@ public class EnemyPatrol : MonoBehaviour
 
     public void flip()
     {
-        anim.SetBool("isRunning", true);
-        Vector3 localScale = transform.localScale;
-        localScale.x *= -1;
-        chaseDistance *= -1;
+        if (!isDead)
+        {
+
+            anim.SetBool("isRunning", true);
+            Vector3 localScale = transform.localScale;
+            localScale.x *= -1;
+            chaseDistance *= -1;
 
 
-        
-        transform.localScale = localScale;
 
+            transform.localScale = localScale;
+        }
     }
 
     void enemyAttack()

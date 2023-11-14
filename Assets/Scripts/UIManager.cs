@@ -169,6 +169,7 @@ public class UIManager : MonoBehaviour
         if(GameManager.Instance.isWin == true && panelWin != null)
         {
             panelWin.SetActive(true);
+            isPaused = true;
         }
 
         if (GameManager.Instance.isGameOver == true && panelLose != null)
@@ -229,7 +230,7 @@ public class UIManager : MonoBehaviour
 
     public void Pause()
     {
-        if (GameManager.Instance.isGameOver == true)
+        if (GameManager.Instance.isGameOver == false)
         {
             isPaused = true;
             pausePanel.SetActive(true);

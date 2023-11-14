@@ -20,40 +20,47 @@ public class MeleeAttackManager : Character
 
     private float timer = 0f;
 
-    private bool canAttack;
+    public bool canAttack;
 
+    [HideInInspector]public bool animSlash;
+    private PlayerMovement player;
     /*
     //The Animator component on the player
     private Animator anim;
     //The Character script on the player; this script on my project manages the grounded state, so if you have a different script for that reference that script
-    private Character character;
+    
 
     //Run this method instead of Initialization if you don't have any scripts inheriting from each other
+    */
     private void Start()
     {
         //The Animator component on the player
-        anim = GetComponent<Animator>();
+        //anim = GetComponent<Animator>();
         //The Character script on the player; this script on my project manages the grounded state, so if you have a different script for that reference that script
-        character = GetComponent<Character>();
+        //character = GetComponent<Character>();
         //The animator on the meleePrefab
         meleeAnimator = GetComponentInChildren<MeleeWeapon>().gameObject.GetComponent<Animator>();
+        player = GetComponent<PlayerMovement>();
+        canAttack = true;
+        animSlash = false;
     }
-    */
+    
 
     //Start method from the Character script; grabs all the references the script has and adds some; if you don't inherit from a parent Character script, delete or comment out this method and use Start instead
-    protected override void Initializtion()
-    {
-        //This grabs all the references already defined by the Character script
-        base.Initializtion();
-        //The animator on the meleePrefab
-        meleeAnimator = GetComponentInChildren<MeleeWeapon>().gameObject.GetComponent<Animator>();
-        canAttack = true;
-    }
+    //protected override void Initializtion()
+    //{
+    //    //This grabs all the references already defined by the Character script
+    //    base.Initializtion();
+    //    //The animator on the meleePrefab
+    //    meleeAnimator = GetComponentInChildren<MeleeWeapon>().gameObject.GetComponent<Animator>();
+    //    canAttack = true;
+    //}
 
 
     private void Update()
     {
         //Method that checks to see what keys are being pressed
+        if(player.isDead == false)
         CheckInput();
     }
 
@@ -66,28 +73,31 @@ public class MeleeAttackManager : Character
             {
                 timer = 0;
                 canAttack = true;
+                animSlash = false;
             }
         }
+
+
         //Checks to see if Backspace key is pressed which I define as melee attack; you can of course change this to anything you would want
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
             //Sets the meleeAttack bool to true
             Attack();
         }
-        else
-        {
-            //Turns off the meleeAttack bool
-            //StartCoroutine(DelayAttack(delayAttack));
-            AttackUp();
-        }
+
         //Checks to see if meleeAttack is true and pressing up
         if (meleeAttack && Input.GetAxis("Vertical") > 0)
         {
             //Turns on the animation for the player to perform an upward melee attack
             //anim.SetTrigger("UpwardMelee");
             //Turns on the animation on the melee weapon to show the swipe area for the melee attack upwards
-            meleeAnimator.SetTrigger("UpwardMeleeSwipe");
+   
+            
+            meleeAttack = false;
             canAttack = false;
+
+            meleeAnimator.SetTrigger("UpwardMeleeSwipe");
+            animSlash = true;
         }
         //Checks to see if meleeAttack is true and pressing down while also not grounded
         if (meleeAttack && Input.GetAxis("Vertical") < 0 && !character.isGrounded)
@@ -95,19 +105,31 @@ public class MeleeAttackManager : Character
             //Turns on the animation for the player to perform a downward melee attack
             //anim.SetTrigger("DownwardMelee");
             //Turns on the animation on the melee weapon to show the swipe area for the melee attack downwards
-            meleeAnimator.SetTrigger("DownwardMeleeSwipe");
+
+
+            meleeAttack = false;
             canAttack = false;
+
+            meleeAnimator.SetTrigger("DownwardMeleeSwipe");
+
+            animSlash = true;
         }
         //Checks to see if meleeAttack is true and not pressing any direction
         if ((meleeAttack && Input.GetAxis("Vertical") == 0)
-             //OR if melee attack is true and pressing down while grounded
+            //OR if melee attack is true and pressing down while grounded
             || meleeAttack && (Input.GetAxis("Vertical") < 0 && character.isGrounded))
         {
             //Turns on the animation for the player to perform a forward melee attack
             //anim.SetTrigger("ForwardMelee");
             //Turns on the animation on the melee weapon to show the swipe area for the melee attack forwards
-            meleeAnimator.SetTrigger("ForwardMeleeSwipe");
+
+
+            meleeAttack = false;
             canAttack = false;
+
+            meleeAnimator.SetTrigger("ForwardMeleeSwipe");
+            animSlash = true;
+
         }
     }
 
@@ -122,10 +144,10 @@ public class MeleeAttackManager : Character
        
     }
 
-    public void AttackUp()
-    {
-        meleeAttack = false;
-    }
+    //public void AttackUp()
+    //{
+    //    meleeAttack = false;
+    //}
 
     private IEnumerator DelayAttack(float delay)
     {

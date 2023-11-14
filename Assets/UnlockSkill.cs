@@ -9,6 +9,7 @@ public class UnlockSkill : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             UIManager.Instance.OpenSkill();
+            AudioManager.Instance.PlaySFX("CollectSFX");
             gameObject.SetActive(false);
         }
     }
