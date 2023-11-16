@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Fix/Old/MainMenu 1.unity
-    guid: 2b1c30f309a74104c96007575ac53a54
+    path: Assets/Scenes/Fix/MainMenu.unity
+    guid: fd038d585585ca240944bce3749b7896
   - enabled: 1
     path: Assets/Scenes/Fix/Cutscene Prolog.unity
     guid: c335277811a5cf645ad49b81bfa377c6

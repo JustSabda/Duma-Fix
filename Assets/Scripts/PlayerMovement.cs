@@ -368,6 +368,7 @@ public class PlayerMovement : MonoBehaviour
 
 	public void AnimSlash()
     {
+
         if (!isDead && attackManager.meleeAttack == true)
 			//canMove = false;
 			anim.SetTrigger("PlayerAttack");
@@ -379,12 +380,13 @@ public class PlayerMovement : MonoBehaviour
 
 	public void DashBtn()
     {
-		StartCoroutine(Dash());
+		if (!isDead)
+			StartCoroutine(Dash());
 	}
 	private IEnumerator Dash()
     {
 		canDash = false;
-		canMove = false;
+		//canMove = false;
 		isDashing = true;
 
 		AudioManager.Instance.PlaySFX("Dash SFX");
@@ -406,8 +408,10 @@ public class PlayerMovement : MonoBehaviour
 
 		float powerDash = dashingPower;
 
+
 		if (!character.isGrounded)
-			powerDash = (dashingPower -4) /2;
+			powerDash = (dashingPower - 4) / 2;
+
 		else
 			powerDash = dashingPower;
 
@@ -431,11 +435,13 @@ public class PlayerMovement : MonoBehaviour
 
 	public void ButtonRight()
     {
+		if(!isDead)
 		_moveInput.x = 1;
 	}
 	public void ButtonLeft()
 	{
-		_moveInput.x = -1;
+		if (!isDead)
+			_moveInput.x = -1;
 	}
 	public void ButtonUp()
     {
@@ -464,12 +470,14 @@ public class PlayerMovement : MonoBehaviour
 	//Methods which whandle input detected in Update()
     public void OnJumpInput()
 	{
-		LastPressedJumpTime = Data.jumpInputBufferTime;
+		if (!isDead)
+			LastPressedJumpTime = Data.jumpInputBufferTime;
 	}
 
 	public void OnJumpUpInput()
 	{
-		if (CanJumpCut() || CanWallJumpCut())
+		if (!isDead)
+			if (CanJumpCut() || CanWallJumpCut())
 			_isJumpCut = true;
 	}
     #endregion
