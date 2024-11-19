@@ -174,7 +174,7 @@ public class UIManager : MonoBehaviour
 
         if (GameManager.Instance.isGameOver == true && panelLose != null)
         {
-            //panelLose.SetActive(true);
+            panelLose.SetActive(true);
         }
 
     }
